@@ -1,10 +1,17 @@
 package cat.institutmarianao.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 //TODO - Configure Spring element and add mappings
+@Controller
+@RequestMapping("/admin")
 public class AdminController {
 
+	@GetMapping("/orders")
 	public ModelAndView orders() {
 
 		// TODO - get all user orders
@@ -13,7 +20,8 @@ public class AdminController {
 		// TODO - parameter
 		return null;
 	}
-
+	
+	@PostMapping("/orders/setDeliveryDate")
 	public String setDeliveryDate(/* TODO - Get reference parameter */
 	/* TODO - Get deliveryDate parameter */) {
 
@@ -22,7 +30,8 @@ public class AdminController {
 		// TODO - Update the order
 		return "redirect:/admin/orders";
 	}
-
+	
+	@PostMapping("/orders/setState")
 	public String setState(/* TODO - Get reference parameter */
 	/* TODO - Get state parameter */) {
 

@@ -2,9 +2,14 @@ package cat.institutmarianao.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +18,9 @@ import cat.institutmarianao.domain.User;
 import jakarta.validation.Valid;
 
 //TODO - Configure Spring element and add mappings
+@Controller
+@RequestMapping("/users/orders")
+@SessionAttributes("order")
 public class OrderController {
 
 	@ModelAttribute("order")
@@ -24,7 +32,8 @@ public class OrderController {
 		order.setClient(client);
 		return order;
 	}
-
+	
+	@GetMapping
 	public ModelAndView orders() {
 		// TODO - get authenticated user here
 		// TODO - get user orders
@@ -33,12 +42,14 @@ public class OrderController {
 		return null;
 	}
 
+	@GetMapping("/newOrder")
 	public ModelAndView newOrder() {
 		// TODO - Prepare the newOrder.jsp view and send all the available items
 		// TODO - The new user order is in session
 		return null;
 	}
 
+	@PostMapping("/newOrder/clearItems")
 	public String newOrderClearItems(@SessionAttribute("order") Order order) {
 
 		order.getItems().clear();
@@ -46,6 +57,7 @@ public class OrderController {
 		return "redirect:/users/orders/newOrder";
 	}
 
+	@PostMapping("/newOrder/increaseItem")
 	public String newOrderIncreaseItem(@SessionAttribute("order") Order order
 	/* TODO - Get the reference parameter */) {
 
@@ -54,6 +66,7 @@ public class OrderController {
 		return "redirect:/users/orders/newOrder";
 	}
 
+	@PostMapping("/newOrder/decreaseItem")
 	public String newOrderDecreaseItem(@SessionAttribute("order") Order order
 	/* TODO - Get the reference parameter */) {
 
@@ -62,13 +75,15 @@ public class OrderController {
 
 		return "redirect:/users/orders/newOrder";
 	}
-
+	
+	@GetMapping("/newOrder/finishOrder")
 	public String finishOrder() {
 		// Nothing to do. We have order attibute in session, so the view can take it
 		// from there
 		return "finishOrder";
 	}
-
+	
+	@PostMapping("/newOrder/finishOrder")
 	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult bindingResult,
 			SessionStatus sessionStatus) {
 
