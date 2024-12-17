@@ -1,5 +1,7 @@
 package cat.institutmarianao.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import cat.institutmarianao.domain.Item;
 import cat.institutmarianao.domain.Order;
 import cat.institutmarianao.domain.User;
 import jakarta.validation.Valid;
@@ -32,21 +35,23 @@ public class OrderController {
 		order.setClient(client);
 		return order;
 	}
-	
+
 	@GetMapping
-	public ModelAndView orders() {
-		// TODO - get authenticated user here
-		// TODO - get user orders
-		// TODO - Prepare the orders.jsp view and send user orders and Order.STATES as
-		// parameter
-		return null;
+	public ModelAndView orders(@ModelAttribute("order") Order order) {
+		User client = order.getClient();
+		List<Order> userOrders = client.getOrders();
+		ModelAndView modelview = new ModelAndView("orders");
+		modelview.addObject("userOrders", userOrders);
+		modelview.addObject("STATES", Order.STATES);
+		return modelview;
 	}
 
 	@GetMapping("/newOrder")
 	public ModelAndView newOrder() {
 		// TODO - Prepare the newOrder.jsp view and send all the available items
 		// TODO - The new user order is in session
-		return null;
+		ModelAndView modelview = new ModelAndView("newOrder");
+		return modelview;
 	}
 
 	@PostMapping("/newOrder/clearItems")
@@ -75,14 +80,14 @@ public class OrderController {
 
 		return "redirect:/users/orders/newOrder";
 	}
-	
+
 	@GetMapping("/newOrder/finishOrder")
 	public String finishOrder() {
 		// Nothing to do. We have order attibute in session, so the view can take it
 		// from there
 		return "finishOrder";
 	}
-	
+
 	@PostMapping("/newOrder/finishOrder")
 	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult bindingResult,
 			SessionStatus sessionStatus) {

@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cat.institutmarianao</groupId>
-	<artifactId>orders-spring-mvc</artifactId>
+	<artifactId>orders</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<name>Orders - by Institut Marianao</name>

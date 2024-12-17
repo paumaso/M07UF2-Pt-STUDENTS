@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 // TODO - Configure Spring element and add mappings
 @Controller
-@RequestMapping("/orders-spring-mvc")
 public class LoginController {
 	@GetMapping
 	public String check(HttpServletRequest request) throws ServletException, IOException {
