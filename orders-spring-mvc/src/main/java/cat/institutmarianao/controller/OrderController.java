@@ -1,6 +1,7 @@
 package cat.institutmarianao.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -60,7 +61,7 @@ public class OrderController {
 		return modelView;
 	}
 
-	@PostMapping("/newOrder/clearItems")
+	@GetMapping("/newOrder/clearItems")
 	public String newOrderClearItems(@SessionAttribute("order") Order order) {
 
 		order.getItems().clear();
@@ -68,13 +69,20 @@ public class OrderController {
 		return "redirect:/users/orders/newOrder";
 	}
 
-	@PostMapping("/newOrder/increaseItem")
+	@GetMapping("/newOrder/increaseItem")
 	public String newOrderIncreaseItem(@SessionAttribute("order") Order order,
-			@PathVariable("reference") Long reference) {
-		
+			 @RequestParam("reference") Long reference) {
+
 		Item item = itemRepository.get(reference);
-		// TODO - Get the item related to the reference passed as parameter
-		// TODO - Increase item quantity
+		if (item != null) {
+			Map<Item, Integer> items = order.getItems();
+
+			if (items.containsKey(item)) {
+				items.put(item, items.get(item) + 1);
+			} else {
+				items.put(item, 1);
+			}
+		}
 		return "redirect:/users/orders/newOrder";
 	}
 

@@ -19,19 +19,18 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="card">
-					<div class="card-header d-flex">
-						<h4>
+					<div
+						class="card-header d-flex align-items-center justify-content-between">
+						<h4 class="mb-0">
 							<i class="bi bi-cart4"></i>
 							<spring:message code="newOrder.selected.items" />
 						</h4>
 						<spring:url value="/users/orders/newOrder/clearItems"
 							var="clearItemsUrl" />
-						<form action="${clearItemsUrl}" method="post" class="ms-auto">
-							<button type="submit" class="btn btn-outline-secondary">
-								<i class="bi bi-x-circle"></i>
-								<spring:message code="newOrder.clear" />
-							</button>
-						</form>
+						<a href="${clearItemsUrl}" class="btn btn-outline-secondary">
+							<i class="bi bi-x-circle"></i> <spring:message
+								code="newOrder.clear" />
+						</a>
 					</div>
 					<div class="card-body">
 						<c:forEach items="${selectedItems}" var="item">
@@ -63,11 +62,11 @@
 						</c:forEach>
 					</div>
 					<div class="card-footer d-grid d-md-block">
-					<spring:url value="/users/orders/newOrder/finishOrder"
-										var="finishOrderUrl" />
-						<a href="${finishOrder}"
-							class="btn btn-outline-secondary col-12" role="button"> <i
-							class="bi bi-bag-check-fill"></i> Finish order
+						<spring:url value="/users/orders/newOrder/finishOrder"
+							var="finishOrderUrl" />
+						<a href="${finishOrder}" class="btn btn-outline-secondary col-12"
+							role="button"> <i class="bi bi-bag-check-fill"></i> Finish
+							order
 						</a>
 					</div>
 				</div>
@@ -98,8 +97,8 @@
 									<div class="d-flex">
 										<spring:url value="/users/orders/newOrder/increaseItem"
 											var="increaseItemUrl" />
-										<a href="${increaseItemUrl}?reference=${item.reference}" class="link-secondary"> <i
-											class="bi bi-plus-circle"></i>
+										<a href="${increaseItemUrl}?reference=${item.reference}"
+											class="link-secondary"> <i class="bi bi-plus-circle"></i>
 										</a>
 									</div>
 								</div>
