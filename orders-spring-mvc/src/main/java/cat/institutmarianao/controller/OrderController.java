@@ -2,14 +2,17 @@ package cat.institutmarianao.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import cat.institutmarianao.domain.Item;
 import cat.institutmarianao.domain.Order;
 import cat.institutmarianao.domain.User;
+import cat.institutmarianao.repository.ItemRepository;
 import jakarta.validation.Valid;
 
 //TODO - Configure Spring element and add mappings
@@ -25,6 +29,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/users/orders")
 @SessionAttributes("order")
 public class OrderController {
+	@Autowired
+	private ItemRepository itemRepository;
 
 	@ModelAttribute("order")
 	public Order setupOrder() {
@@ -48,10 +54,10 @@ public class OrderController {
 
 	@GetMapping("/newOrder")
 	public ModelAndView newOrder() {
-		// TODO - Prepare the newOrder.jsp view and send all the available items
-		// TODO - The new user order is in session
-		ModelAndView modelview = new ModelAndView("newOrder");
-		return modelview;
+		List<Item> allItems = itemRepository.getAll();
+		ModelAndView modelView = new ModelAndView("newOrder");
+		modelView.addObject("availableItems", allItems);
+		return modelView;
 	}
 
 	@PostMapping("/newOrder/clearItems")
@@ -63,9 +69,10 @@ public class OrderController {
 	}
 
 	@PostMapping("/newOrder/increaseItem")
-	public String newOrderIncreaseItem(@SessionAttribute("order") Order order
-	/* TODO - Get the reference parameter */) {
-
+	public String newOrderIncreaseItem(@SessionAttribute("order") Order order,
+			@PathVariable("reference") Long reference) {
+		
+		Item item = itemRepository.get(reference);
 		// TODO - Get the item related to the reference passed as parameter
 		// TODO - Increase item quantity
 		return "redirect:/users/orders/newOrder";

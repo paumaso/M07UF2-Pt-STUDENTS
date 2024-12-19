@@ -32,9 +32,9 @@
 						<td>{orders.reference}</td>
 						<td>{orders.deliveryAddress}</td>
 						<td>{orders.date}</td>
-						<%-- <td>{orders.state}</td> --%>
+						<td>{orders.state}</td>
 						<td>{orders.deliveryDate}</td>
-						<%-- <td>{orders.items}</td> --%>
+						<td>{orders.items}</td>
 					</c:forEach>
 					<td colspan="6"><spring:message code= "orders.user.no.orders"/></td>
 				</tr>
