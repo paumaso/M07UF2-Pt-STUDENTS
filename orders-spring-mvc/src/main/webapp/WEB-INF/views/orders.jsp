@@ -18,27 +18,24 @@
 			class="table table-striped table-bordered table-condensed table-responsive">
 			<thead>
 				<tr>
-					<th><spring:message code= "orders.reference"/></th>
-					<th><spring:message code= "orders.deliveryAddress"/></th>
-					<th><spring:message code= "orders.startDate"/></th>
-					<th><spring:message code= "orders.state"/></th>
-					<th><spring:message code= "orders.deliveryDate"/></th>
-					<th><spring:message code= "orders.details"/></th>
+					<th><spring:message code="orders.reference" /></th>
+					<th><spring:message code="orders.deliveryAddress" /></th>
+					<th><spring:message code="orders.startDate" /></th>
+					<th><spring:message code="orders.state" /></th>
+					<th><spring:message code="orders.deliveryDate" /></th>
+					<th><spring:message code="orders.details" /></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<c:forEach items="${userOrders}" var="order">
-						<td>{orders.reference}</td>
-						<td>{orders.deliveryAddress}</td>
-						<td>{orders.date}</td>
-						<td>{orders.state}</td>
-						<td>{orders.deliveryDate}</td>
-						<td>{orders.items}</td>
-					</c:forEach>
-					<td colspan="6"><spring:message code= "orders.user.no.orders"/></td>
-				</tr>
-			</tbody>
+                        <c:forEach items="${Orders}" var="order">
+                            <tr>
+                                <td>${order.reference}</td>
+                                <td><fmt:formatDate value="${order.startDate}" pattern="dd/MM/yyyy" /></td>
+                                <td>${order.state}</td>
+                                <td><fmt:formatDate value="${order.deliveryDate}" pattern="dd/MM/yyyy" /></td>
+                            </tr>
+                        </c:forEach>
+            </tbody>
 		</table>
 		<%-- TODO if user has role ADMIN -> Show all orders of all users and let change state and delivery date --%>
 		<%-- TODO if user has role USER -> Show all orders of the user --%>
