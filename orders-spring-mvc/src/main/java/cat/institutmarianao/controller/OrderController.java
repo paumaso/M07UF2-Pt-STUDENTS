@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.validator.internal.util.logging.Log_.logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -151,21 +150,9 @@ public class OrderController {
 			return "finishOrder";
 		}
 		
-		System.out.println("Detalles de la orden que se está guardando:");
-	    System.out.println("Referencia: " + order.getReference());
-	    System.out.println("Dirección de entrega: " + order.getDeliveryAddress());
-	    System.out.println("Fecha de inicio: " + order.getStartDate());
-	    System.out.println("Estado: " + order.getState());
-	    System.out.println("Fecha de entrega: " + order.getDeliveryDate());
-
-	    // Guardar la orden
-	    order.setStartDate(new Date());
-	    orderService.save(order);
-
-	    // Indicar que la sesión está completa
-	    sessionStatus.setComplete();
-
-	    // Redirigir al usuario a la página de órdenes
-	    return "redirect:/users/orders";
+		order.setStartDate(new Date());
+		orderService.save(order);
+		sessionStatus.setComplete();
+		return "redirect:/users/orders";
 	}
 }
