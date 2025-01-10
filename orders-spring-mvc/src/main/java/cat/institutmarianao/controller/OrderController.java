@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.validator.internal.util.logging.Log_.logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,8 @@ import cat.institutmarianao.domain.Order;
 import cat.institutmarianao.domain.User;
 import cat.institutmarianao.repository.ItemRepository;
 import cat.institutmarianao.repository.OrderRepository;
+import cat.institutmarianao.service.ItemService;
+import cat.institutmarianao.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -34,9 +37,9 @@ import jakarta.validation.Valid;
 @SessionAttributes("order")
 public class OrderController {
 	@Autowired
-	private ItemRepository itemRepository;
+	private ItemService itemService;
 	@Autowired
-	private OrderRepository orderRepository;
+	private OrderService orderService;
 
 	@ModelAttribute("order")
 	public Order setupOrder() {
@@ -52,14 +55,13 @@ public class OrderController {
 	public ModelAndView orders(@ModelAttribute("order") Order order) {
 		User client = order.getClient();
 		List<Order> userOrders = client.getOrders();
-		System.out.println("Number of orders for client: " + (userOrders != null ? userOrders.size() : "null"));
+		System.out.println(userOrders);
+		if (userOrders != null) {
+			userOrders.forEach(o -> System.out.println("Order reference: " + o.getReference()));
+		} else {
+			System.out.println("No orders found for the client.");
+		}
 
-	    if (userOrders != null) {
-	        userOrders.forEach(o -> System.out.println("Order reference: " + o.getReference()));
-	    } else {
-	        System.out.println("No orders found for the client.");
-	    }
-	    
 		ModelAndView modelview = new ModelAndView("orders");
 		modelview.addObject("userOrders", userOrders);
 		modelview.addObject("STATES", Order.STATES);
@@ -68,21 +70,21 @@ public class OrderController {
 
 	@GetMapping("/newOrder")
 	public ModelAndView newOrder(HttpSession session) {
-	    Order order = (Order) session.getAttribute("order");
+		Order order = (Order) session.getAttribute("order");
 
-	    if (order == null) {
-	        order = new Order();
-	        session.setAttribute("order", order);
-	    }
+		if (order == null) {
+			order = new Order();
+			session.setAttribute("order", order);
+		}
 
-	    List<Item> allItems = itemRepository.getAll();
+		List<Item> allItems = itemService.getAll();
 
-	    ModelAndView modelView = new ModelAndView("newOrder");
+		ModelAndView modelView = new ModelAndView("newOrder");
 
-	    modelView.addObject("availableItems", allItems);
-	    modelView.addObject("order", order);
+		modelView.addObject("availableItems", allItems);
+		modelView.addObject("order", order);
 
-	    return modelView;
+		return modelView;
 	}
 
 	@GetMapping("/newOrder/clearItems")
@@ -95,9 +97,9 @@ public class OrderController {
 
 	@GetMapping("/newOrder/increaseItem")
 	public String newOrderIncreaseItem(@SessionAttribute("order") Order order,
-			 @RequestParam("reference") Long reference) {
+			@RequestParam("reference") Long reference) {
 
-		Item item = itemRepository.get(reference);
+		Item item = itemService.get(reference);
 		if (item != null) {
 			Map<Item, Integer> items = order.getItems();
 
@@ -112,48 +114,58 @@ public class OrderController {
 
 	@GetMapping("/newOrder/decreaseItem")
 	public String newOrderDecreaseItem(@SessionAttribute("order") Order order,
-	                                   @RequestParam("reference") Long reference) {
-	    Item item = itemRepository.get(reference);
-	    if (item != null) {
-	        Map<Item, Integer> items = order.getItems();
+			@RequestParam("reference") Long reference) {
+		Item item = itemService.get(reference);
+		if (item != null) {
+			Map<Item, Integer> items = order.getItems();
 
-	        Integer currentQuantity = items.get(item);
-	        if (currentQuantity != null && currentQuantity > 1) {
-	            items.put(item, currentQuantity - 1);
-	        } else {
-	            items.remove(item); 
-	        }
-	    }
-	    return "redirect:/users/orders/newOrder";
+			Integer currentQuantity = items.get(item);
+			if (currentQuantity != null && currentQuantity > 1) {
+				items.put(item, currentQuantity - 1);
+			} else {
+				items.remove(item);
+			}
+		}
+		return "redirect:/users/orders/newOrder";
 	}
 
 	@GetMapping("/newOrder/finishOrder")
-	public String finishOrder() {
-		// Nothing to do. We have order attibute in session, so the view can take it
-		// from there
+	public String finishOrder(@SessionAttribute(name = "order", required = false) Order order) {
+		if (order == null) {
+			return "redirect:/users/orders/newOrder";
+		}
+
+		int itemCount = (order.getItems() == null) ? 0 : order.getItems().size();
+		if (itemCount <= 0) {
+			return "redirect:/users/orders/newOrder";
+		}
+
 		return "finishOrder";
 	}
 
 	@PostMapping("/newOrder/finishOrder")
-	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult bindingResult,
+	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult result,
 			SessionStatus sessionStatus) {
 
-		if (bindingResult.hasErrors()) {
-	        System.out.println("Validation errors: " + bindingResult.getAllErrors());
-	        return "redirect:/users/orders";
-	    }
+		if (result.hasErrors()) {
+			return "finishOrder";
+		}
+		
+		System.out.println("Detalles de la orden que se está guardando:");
+	    System.out.println("Referencia: " + order.getReference());
+	    System.out.println("Dirección de entrega: " + order.getDeliveryAddress());
+	    System.out.println("Fecha de inicio: " + order.getStartDate());
+	    System.out.println("Estado: " + order.getState());
+	    System.out.println("Fecha de entrega: " + order.getDeliveryDate());
 
-	    System.out.println("Order before saving: " + order);
-
+	    // Guardar la orden
 	    order.setStartDate(new Date());
-	    System.out.println("Order start date set to: " + order.getStartDate());
+	    orderService.save(order);
 
-	    orderRepository.save(order);
-	    System.out.println("Order saved with reference: " + order.getReference());
-
+	    // Indicar que la sesión está completa
 	    sessionStatus.setComplete();
-	    System.out.println("Session status completed.");
 
+	    // Redirigir al usuario a la página de órdenes
 	    return "redirect:/users/orders";
 	}
 }

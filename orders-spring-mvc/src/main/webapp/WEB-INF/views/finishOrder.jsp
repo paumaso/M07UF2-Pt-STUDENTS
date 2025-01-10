@@ -1,13 +1,14 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%><%@ taglib prefix="fn"
-	uri="jakarta.tags.functions"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,7 @@
 <body class="m-4">
 	<div class="container">
 		<jsp:include page="sections/header.jsp" />
+
 		<div class="card">
 			<div class="card-header">
 				<h2 class="mb-0">
@@ -24,7 +26,7 @@
 			</div>
 			<div class="card-body">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-12">
 						<section class="mb-4">
 							<h3 class="h5">
 								👤
@@ -43,108 +45,159 @@
 								</div>
 							</div>
 						</section>
-
+					</div>
+					<div class="col-md-6">
+					<spring:url value="finishOrder" var="action"/>
 						<form:form method="POST"
-							action="/orders/users/orders/newOrder/finishOrder"
+							action="${action}"
 							modelAttribute="order">
-							<!-- Shipment Data Section -->
 							<section class="mb-4">
 								<h3 class="h5">
 									✉️
 									<spring:message code="finishOrder.shipment.data" />
 								</h3>
-								<div class="row g-3">
-									<div class="col-12">
+
+								<!-- Fields for delivery address -->
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.recipient" /></label>
-										<form:input path="deliveryAddress.recipientName"
-											class="form-control"
-											placeholder="<spring:message code='login.login'/>" />
 									</div>
-									<div class="col-12">
+									<div class="col-md-9">
+										<spring:message code="finishOrder.recipient.placeholder"
+											var="recipientPlaceholder" />
+										<form:input path="deliveryAddress.recipientName"
+											class="form-control" placeholder="${recipientPlaceholder}" />
+										<form:errors path="deliveryAddress.recipientName"
+											cssClass="text-danger" htmlEscape="false"/>
+									</div>
+								</div>
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.address" /></label>
-										<form:input path="deliveryAddress.address"
-											class="form-control"
-											placeholder="<spring:message code='finishOrder.address.placeholder'/>" />
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-9">
+										<spring:message code="finishOrder.address.placeholder"
+											var="addressPlaceholder" />
+										<form:input path="deliveryAddress.address"
+											class="form-control" placeholder="${addressPlaceholder}" />
+										<form:errors path="deliveryAddress.address"
+											cssClass="text-danger fs-6" htmlEscape="false"/>
+									</div>
+								</div>
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.zip.code" /></label>
-										<form:input path="deliveryAddress.zipCode"
-											class="form-control"
-											placeholder="<spring:message code='finishOrder.zip.code.placeholder'/>" />
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-9">
+										<spring:message code="finishOrder.zip.code.placeholder"
+											var="zipCodePlaceholder" />
+										<form:input path="deliveryAddress.zipCode"
+											class="form-control" placeholder="${zipCodePlaceholder}" />
+										<form:errors path="deliveryAddress.zipCode"
+											cssClass="text-danger" htmlEscape="false"/>
+									</div>
+								</div>
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.city" /></label>
-										<form:input path="deliveryAddress.city" class="form-control"
-											placeholder="<spring:message code='finishOrder.city.placeholder'/>" />
 									</div>
-									<div class="col-12">
+									<div class="col-md-9">
+										<spring:message code="finishOrder.city.placeholder"
+											var="cityPlaceholder" />
+										<form:input path="deliveryAddress.city" class="form-control"
+											placeholder="${cityPlaceholder}" />
+										<form:errors path="deliveryAddress.city"
+											cssClass="text-danger" htmlEscape="false"/>
+									</div>
+								</div>
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.state.province" /></label>
-										<form:input path="deliveryAddress.state" class="form-control"
-											placeholder="<spring:message code='finishOrder.state.province.placeholder'/>" />
 									</div>
-									<div class="col-12">
+									<div class="col-md-9">
+										<spring:message code="finishOrder.state.province.placeholder"
+											var="stateProvincePlaceholder" />
+										<form:input path="deliveryAddress.state" class="form-control"
+											placeholder="${stateProvincePlaceholder}" />
+										<form:errors path="deliveryAddress.state"
+											cssClass="text-danger" htmlEscape="false"/>
+									</div>
+								</div>
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-md-3">
 										<label class="form-label"><spring:message
 												code="finishOrder.country" /></label>
+									</div>
+									<div class="col-md-9">
+										<spring:message code="finishOrder.country.placeholder"
+											var="countryPlaceholder" />
 										<form:input path="deliveryAddress.country"
-											class="form-control"
-											placeholder='<spring:message code="finishOrder.country.placeholder"/>' />
+											class="form-control" placeholder="${countryPlaceholder}" />
+										<form:errors path="deliveryAddress.country"
+											cssClass="text-danger" htmlEscape="false"/>
 									</div>
 								</div>
 							</section>
-
-							<!-- Order Items Section -->
-							<section class="mb-4">
-								<h3 class="h5">
-									📋
-									<spring:message code="finishOrder.items" />
-								</h3>
-								<div class="table-responsive">
-									<table class="table">
-										<thead>
-											<tr>
-												<th><spring:message code="finishOrder.reference" /></th>
-												<th><spring:message code="finishOrder.item" /></th>
-												<th><spring:message code="finishOrder.price" /></th>
-												<th><spring:message code="finishOrder.quantity" /></th>
-												<th><spring:message code="finishOrder.amount" /></th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach items="${order.items.entrySet()}" var="orderItem">
-												<tr>
-													<td>${orderItem.key.reference}</td>
-													<td>${orderItem.key.name}</td>
-													<td>${orderItem.key.price}€</td>
-													<td>${orderItem.value}</td>
-													<td>${orderItem.key.price * orderItem.value}€</td>
-												</tr>
-												<c:set var="total"
-													value="${total + (orderItem.key.price * orderItem.value)}" />
-											</c:forEach>
-											<tr>
-												<td colspan="3"></td>
-												<td><strong>Total</strong></td>
-												<td><strong>${total} €</strong></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</section>
-
-							<!-- Final Order Button Section -->
-							<div class="card-footer">
-								<button type="submit" class="btn btn-secondary w-100">
-									<spring:message code="header.navbar.finish.order" />
-								</button>
-							</div>
-						</form:form>
-						<!-- End Form -->
 					</div>
+
+					<!-- Order Items Section -->
+					<div class="col-md-6">
+						<section class="mb-4">
+							<h3 class="h5">
+								📋
+								<spring:message code="finishOrder.items" />
+							</h3>
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th><spring:message code="finishOrder.reference" /></th>
+											<th><spring:message code="finishOrder.item" /></th>
+											<th><spring:message code="finishOrder.price" /></th>
+											<th><spring:message code="finishOrder.quantity" /></th>
+											<th><spring:message code="finishOrder.amount" /></th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${order.items.entrySet()}" var="orderItem">
+											<tr>
+												<td>${orderItem.key.reference}</td>
+												<td>${orderItem.key.name}</td>
+												<td>${orderItem.key.price}€</td>
+												<td>${orderItem.value}</td>
+												<td>${orderItem.key.price * orderItem.value}€</td>
+											</tr>
+											<c:set var="total"
+												value="${total + (orderItem.key.price * orderItem.value)}" />
+										</c:forEach>
+										<tr>
+											<td colspan="3"></td>
+											<td><strong>Total</strong></td>
+											<td><strong>${total} €</strong></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					</div>
+
+					<div class="card-footer">
+						<button type="submit" class="btn btn-secondary w-100">
+							<i class="bi bi-credit-card"></i>
+							<spring:message code="header.navbar.finish.order" />
+						</button>
+					</div>
+					</form:form>
 				</div>
 			</div>
 		</div>

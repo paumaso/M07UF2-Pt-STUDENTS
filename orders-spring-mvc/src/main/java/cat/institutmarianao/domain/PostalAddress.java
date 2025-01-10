@@ -18,24 +18,24 @@ public class PostalAddress implements Serializable {
 
 	private String recipientName;
 
-	@NotBlank
-	@Size(max = MAX_ADDRESS)
+    @NotBlank(message = "{NotBlank.order.deliveryAddress.address}")
+	@Size(max = MAX_ADDRESS, message = "{Size.order.deliveryAddress.address}")
 	private String address;
 
-	@NotBlank
-	@Size(max = MAX_ZIP_CODE)
+    @NotBlank(message = "{NotBlank.order.deliveryAddress.zipCode}")
+	@Size(max = MAX_ZIP_CODE, message = "{Size.order.deliveryAddress.zipCode}")
 	private String zipCode;
 
-	@NotBlank
-	@Size(max = MAX_CITY)
+    @NotBlank(message = "{NotBlank.order.deliveryAddress.city}")
+	@Size(max = MAX_CITY, message = "{Size.order.deliveryAddress.city}")
 	private String city;
 
-	@NotBlank
-	@Size(max = MAX_STATE)
+    @NotBlank(message = "{NotBlank.order.deliveryAddress.state}")
+	@Size(max = MAX_STATE, message = "{Size.order.deliveryAddress.state}")
 	private String state;
 
-	@NotBlank
-	@Size(max = MAX_COUNTRY)
+    @NotBlank(message = "{NotBlank.order.deliveryAddress.country}")
+	@Size(max = MAX_COUNTRY, message = "{Size.order.deliveryAddress.country}")
 	private String country;
 
 	public String getRecipientName() {
