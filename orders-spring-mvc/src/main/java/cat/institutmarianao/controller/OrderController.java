@@ -52,19 +52,14 @@ public class OrderController {
 
 	@GetMapping
 	public ModelAndView orders(@ModelAttribute("order") Order order) {
-		User client = order.getClient();
-		List<Order> userOrders = client.getOrders();
-		System.out.println(userOrders);
-		if (userOrders != null) {
-			userOrders.forEach(o -> System.out.println("Order reference: " + o.getReference()));
-		} else {
-			System.out.println("No orders found for the client.");
-		}
+	    User client = order.getClient();
+	    List<Order> userOrders = orderService.findByUser(client);
 
-		ModelAndView modelview = new ModelAndView("orders");
-		modelview.addObject("userOrders", userOrders);
-		modelview.addObject("STATES", Order.STATES);
-		return modelview;
+	    System.out.println(userOrders.toString());
+	    ModelAndView modelview = new ModelAndView("orders");
+	    modelview.addObject("Orders", userOrders);
+	    modelview.addObject("STATES", Order.STATES);
+	    return modelview;
 	}
 
 	@GetMapping("/newOrder")
@@ -144,15 +139,15 @@ public class OrderController {
 
 	@PostMapping("/newOrder/finishOrder")
 	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult result,
-			SessionStatus sessionStatus) {
+	                          SessionStatus sessionStatus) {
 
-		if (result.hasErrors()) {
-			return "finishOrder";
-		}
-		
-		order.setStartDate(new Date());
-		orderService.save(order);
-		sessionStatus.setComplete();
-		return "redirect:/users/orders";
+	    if (result.hasErrors()) {
+	        return "finishOrder";
+	    }
+
+	    order.setStartDate(new Date());
+	    orderService.save(order);
+	    sessionStatus.setComplete();
+	    return "redirect:/users/orders";
 	}
 }

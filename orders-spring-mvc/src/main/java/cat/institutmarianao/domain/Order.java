@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -16,9 +18,13 @@ public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// TODO enum
 	public static final String[] STATES = { "order.state.pending", "order.state.transit", "order.state.delivery",
 			"order.state.absent", "order.state.pending.collection", "order.state.returned" };
+	
+	public enum States {
+		STATES
+	}
+	
 
 	private Long reference;
 
@@ -123,5 +129,6 @@ public class Order implements Serializable {
 		}
 		return false;
 	}
+	
 
 }
