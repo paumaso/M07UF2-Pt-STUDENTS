@@ -55,7 +55,6 @@ public class OrderController {
 	    User client = order.getClient();
 	    List<Order> userOrders = orderService.findByUser(client);
 
-	    System.out.println(userOrders.toString());
 	    ModelAndView modelview = new ModelAndView("orders");
 	    modelview.addObject("Orders", userOrders);
 	    modelview.addObject("STATES", Order.STATES);
@@ -103,6 +102,9 @@ public class OrderController {
 				items.put(item, 1);
 			}
 		}
+		
+		Double totalAmount = order.getTotalAmount();
+	    
 		return "redirect:/users/orders/newOrder";
 	}
 
@@ -120,6 +122,8 @@ public class OrderController {
 				items.remove(item);
 			}
 		}
+		
+		
 		return "redirect:/users/orders/newOrder";
 	}
 
@@ -148,6 +152,7 @@ public class OrderController {
 	    order.setStartDate(new Date());
 	    orderService.save(order);
 	    sessionStatus.setComplete();
+	    
 	    return "redirect:/users/orders";
 	}
 }
