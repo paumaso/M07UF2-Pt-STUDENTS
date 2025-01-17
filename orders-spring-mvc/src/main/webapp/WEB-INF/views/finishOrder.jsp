@@ -47,10 +47,8 @@
 						</section>
 					</div>
 					<div class="col-md-6">
-					<spring:url value="finishOrder" var="action"/>
-						<form:form method="POST"
-							action="${action}"
-							modelAttribute="order">
+						<spring:url value="finishOrder" var="action" />
+						<form:form method="POST" action="${action}" modelAttribute="order">
 							<section class="mb-4">
 								<h3 class="h5">
 									✉️
@@ -69,7 +67,7 @@
 										<form:input path="deliveryAddress.recipientName"
 											class="form-control" placeholder="${recipientPlaceholder}" />
 										<form:errors path="deliveryAddress.recipientName"
-											cssClass="text-danger" htmlEscape="false"/>
+											cssClass="text-danger" htmlEscape="false" />
 									</div>
 								</div>
 
@@ -84,7 +82,7 @@
 										<form:input path="deliveryAddress.address"
 											class="form-control" placeholder="${addressPlaceholder}" />
 										<form:errors path="deliveryAddress.address"
-											cssClass="text-danger fs-6" htmlEscape="false"/>
+											cssClass="text-danger fs-6" htmlEscape="false" />
 									</div>
 								</div>
 
@@ -99,7 +97,7 @@
 										<form:input path="deliveryAddress.zipCode"
 											class="form-control" placeholder="${zipCodePlaceholder}" />
 										<form:errors path="deliveryAddress.zipCode"
-											cssClass="text-danger" htmlEscape="false"/>
+											cssClass="text-danger" htmlEscape="false" />
 									</div>
 								</div>
 
@@ -114,7 +112,7 @@
 										<form:input path="deliveryAddress.city" class="form-control"
 											placeholder="${cityPlaceholder}" />
 										<form:errors path="deliveryAddress.city"
-											cssClass="text-danger" htmlEscape="false"/>
+											cssClass="text-danger" htmlEscape="false" />
 									</div>
 								</div>
 
@@ -129,7 +127,7 @@
 										<form:input path="deliveryAddress.state" class="form-control"
 											placeholder="${stateProvincePlaceholder}" />
 										<form:errors path="deliveryAddress.state"
-											cssClass="text-danger" htmlEscape="false"/>
+											cssClass="text-danger" htmlEscape="false" />
 									</div>
 								</div>
 
@@ -144,7 +142,7 @@
 										<form:input path="deliveryAddress.country"
 											class="form-control" placeholder="${countryPlaceholder}" />
 										<form:errors path="deliveryAddress.country"
-											cssClass="text-danger" htmlEscape="false"/>
+											cssClass="text-danger" htmlEscape="false" />
 									</div>
 								</div>
 							</section>
@@ -173,9 +171,14 @@
 											<tr>
 												<td>${orderItem.key.reference}</td>
 												<td>${orderItem.key.name}</td>
-												<td>${orderItem.key.price}€</td>
+												<td><fmt:formatNumber value="${orderItem.key.price}"
+														type="number" minFractionDigits="2" maxFractionDigits="2" />
+													<spring:message code="currency.symbol" /></td>
 												<td>${orderItem.value}</td>
-												<td>${orderItem.key.price * orderItem.value}€</td>
+												<td><fmt:formatNumber
+														value="${orderItem.key.price * orderItem.value}"
+														type="number" minFractionDigits="2" maxFractionDigits="2" />
+													<spring:message code="currency.symbol" /></td>
 											</tr>
 											<c:set var="total"
 												value="${total + (orderItem.key.price * orderItem.value)}" />
@@ -183,7 +186,9 @@
 										<tr>
 											<td colspan="3"></td>
 											<td><strong>Total</strong></td>
-											<td><strong>${total} €</strong></td>
+											<td><strong><fmt:formatNumber value="${total}"
+														type="number" minFractionDigits="2" maxFractionDigits="2" />
+													<spring:message code="currency.symbol" /></strong></td>
 										</tr>
 									</tbody>
 								</table>

@@ -1,6 +1,7 @@
 package cat.institutmarianao.domain;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

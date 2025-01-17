@@ -6,7 +6,8 @@
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,9 +41,14 @@
 										style="width: 60px">
 								</div>
 								<div class="flex-grow-1 d-flex flex-column">
+
 									<div class="d-flex flex-row">
 										<span class="flex-shrink-1 h5">${order.key.name}</span> <small>
-											x ${order.value} = ${order.key.price * order.value} €</small>
+											x ${order.value} = <fmt:formatNumber
+												value="${order.key.price * order.value}" type="number"
+												minFractionDigits="2" maxFractionDigits="2" /> <spring:message
+												code="currency.symbol" />
+										</small>
 									</div>
 									<p>${order.key.description}</p>
 								</div>
@@ -64,9 +70,9 @@
 					<div class="card-footer d-grid d-md-block">
 						<spring:url value="/users/orders/newOrder/finishOrder"
 							var="finishOrderUrl" />
-						<a href="${finishOrderUrl}" class="btn btn-outline-secondary col-12"
-							role="button"> <i class="bi bi-bag-check-fill"></i> Finish
-							order
+						<a href="${finishOrderUrl}"
+							class="btn btn-outline-secondary col-12" role="button"> <i
+							class="bi bi-bag-check-fill"></i> Finish order
 						</a>
 					</div>
 				</div>

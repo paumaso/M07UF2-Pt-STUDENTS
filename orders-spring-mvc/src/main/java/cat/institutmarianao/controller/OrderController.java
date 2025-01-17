@@ -69,9 +69,11 @@ public class OrderController {
 			order = new Order();
 			session.setAttribute("order", order);
 		}
+		
 
 		List<Item> allItems = itemService.getAll();
 
+		
 		ModelAndView modelView = new ModelAndView("newOrder");
 
 		modelView.addObject("availableItems", allItems);
@@ -103,7 +105,6 @@ public class OrderController {
 			}
 		}
 		
-		Double totalAmount = order.getTotalAmount();
 	    
 		return "redirect:/users/orders/newOrder";
 	}
@@ -128,15 +129,22 @@ public class OrderController {
 	}
 
 	@GetMapping("/newOrder/finishOrder")
-	public String finishOrder(@SessionAttribute(name = "order", required = false) Order order) {
+	public String finishOrder(@SessionAttribute(name = "order", required = false) Order order, HttpSession session) {
+		
 		if (order == null) {
 			return "redirect:/users/orders/newOrder";
 		}
 
+		Integer totalQuantity = order.getTotalQuantity();
+	    Double totalAmount = order.getTotalAmount();
+	    
 		int itemCount = (order.getItems() == null) ? 0 : order.getItems().size();
 		if (itemCount <= 0) {
 			return "redirect:/users/orders/newOrder";
 		}
+		
+		session.setAttribute("totalQuantity", totalQuantity);
+	    session.setAttribute("totalAmount", totalAmount);
 
 		return "finishOrder";
 	}

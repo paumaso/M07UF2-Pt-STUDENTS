@@ -105,9 +105,14 @@
 														<tr>
 															<td>${orderItem.key.reference}</td>
 															<td>${orderItem.key.name}</td>
-															<td>${orderItem.key.price}€</td>
+															<td><fmt:formatNumber value="${orderItem.key.price}"
+																	type="number" minFractionDigits="2"
+																	maxFractionDigits="2" />€</td>
 															<td>${orderItem.value}</td>
-															<td>${orderItem.key.price * orderItem.value}€</td>
+															<td><fmt:formatNumber
+																	value="${orderItem.key.price * orderItem.value}"
+																	type="number" minFractionDigits="2"
+																	maxFractionDigits="2" />€</td>
 														</tr>
 														<c:set var="total"
 															value="${total + (orderItem.key.price * orderItem.value)}" />
@@ -115,10 +120,12 @@
 													<tr>
 														<td colspan="3"></td>
 														<td><strong>Total</strong></td>
-														<td><strong>${total} <spring:message
-																	code="currency.symbol" /></strong></td>
+														<td><strong><fmt:formatNumber
+																	value="${total}" type="number" minFractionDigits="2"
+																	maxFractionDigits="2" /> €</strong></td>
 													</tr>
 												</tbody>
+
 											</table>
 										</div>
 									</td>

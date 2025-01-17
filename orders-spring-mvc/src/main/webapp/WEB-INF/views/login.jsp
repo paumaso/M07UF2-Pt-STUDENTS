@@ -16,7 +16,14 @@
 <body class="m-4">
 	<div class="container">
 		<jsp:include page="sections/header.jsp" />
-		<form action="/orders/login" method="post">
+		
+		<c:if test="${not empty error}">
+            <div class="alert alert-danger" role="alert">
+                <spring:message code="${error}" />
+            </div>
+        </c:if>
+        
+		<form action="<c:url value='/j_spring_security_check' />" method="post">
 			<div class="container g-2 mb-4">
 				<div class="row justify-content-center overflow-hidden">
 					<div class="col-sm-9 col-md-7 col-lg-5 col-xl-4">
