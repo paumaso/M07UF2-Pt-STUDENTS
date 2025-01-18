@@ -1,9 +1,15 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+=======
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%><%@ taglib prefix="fn"
+	uri="jakarta.tags.functions"%>
+>>>>>>> branch 'master' of https://github.com/amoren86/M07UF2-Pt-STUDENTS.git
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec"
