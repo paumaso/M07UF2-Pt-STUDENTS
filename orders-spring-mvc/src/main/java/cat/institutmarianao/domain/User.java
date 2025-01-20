@@ -16,12 +16,12 @@ public class User implements Serializable {
 	public static final int MIN_PASSWORD = 4;
 	public static final int MAX_PASSWORD = 50;
 
-	@NotBlank
-	@Size(max = MAX_USERNAME)
+	@NotBlank(message = "{login.username.notBlank}")
+    @Size(max = MAX_USERNAME, message = "{login.username.size}")
 	private String username;
 
-	@NotBlank
-	@Size(min = MIN_PASSWORD, max = MAX_PASSWORD)
+	@NotBlank(message = "{login.password.notBlank}")
+    @Size(min = MIN_PASSWORD, max = MAX_PASSWORD, message = "{login.password.size}")
 	private String password;
 
 	@NotBlank
@@ -100,5 +100,13 @@ public class User implements Serializable {
 		}
 		return false;
 	}
+	
+	@Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 
 }

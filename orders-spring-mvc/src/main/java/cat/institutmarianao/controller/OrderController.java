@@ -52,19 +52,13 @@ public class OrderController {
 
 	@GetMapping
 	public ModelAndView orders(@ModelAttribute("order") Order order) {
-		User client = order.getClient();
-		List<Order> userOrders = client.getOrders();
-		System.out.println(userOrders);
-		if (userOrders != null) {
-			userOrders.forEach(o -> System.out.println("Order reference: " + o.getReference()));
-		} else {
-			System.out.println("No orders found for the client.");
-		}
+	    User client = order.getClient();
+	    List<Order> userOrders = orderService.findByUser(client);
 
-		ModelAndView modelview = new ModelAndView("orders");
-		modelview.addObject("userOrders", userOrders);
-		modelview.addObject("STATES", Order.STATES);
-		return modelview;
+	    ModelAndView modelview = new ModelAndView("orders");
+	    modelview.addObject("Orders", userOrders);
+	    modelview.addObject("STATES", Order.STATES);
+	    return modelview;
 	}
 
 	@GetMapping("/newOrder")
@@ -75,9 +69,11 @@ public class OrderController {
 			order = new Order();
 			session.setAttribute("order", order);
 		}
+		
 
 		List<Item> allItems = itemService.getAll();
 
+		
 		ModelAndView modelView = new ModelAndView("newOrder");
 
 		modelView.addObject("availableItems", allItems);
@@ -108,6 +104,8 @@ public class OrderController {
 				items.put(item, 1);
 			}
 		}
+		
+	    
 		return "redirect:/users/orders/newOrder";
 	}
 
@@ -125,34 +123,44 @@ public class OrderController {
 				items.remove(item);
 			}
 		}
+		
+		
 		return "redirect:/users/orders/newOrder";
 	}
 
 	@GetMapping("/newOrder/finishOrder")
-	public String finishOrder(@SessionAttribute(name = "order", required = false) Order order) {
+	public String finishOrder(@SessionAttribute(name = "order", required = false) Order order, HttpSession session) {
+		
 		if (order == null) {
 			return "redirect:/users/orders/newOrder";
 		}
 
+		Integer totalQuantity = order.getTotalQuantity();
+	    Double totalAmount = order.getTotalAmount();
+	    
 		int itemCount = (order.getItems() == null) ? 0 : order.getItems().size();
 		if (itemCount <= 0) {
 			return "redirect:/users/orders/newOrder";
 		}
+		
+		session.setAttribute("totalQuantity", totalQuantity);
+	    session.setAttribute("totalAmount", totalAmount);
 
 		return "finishOrder";
 	}
 
 	@PostMapping("/newOrder/finishOrder")
 	public String finishOrder(@Valid @ModelAttribute("order") Order order, BindingResult result,
-			SessionStatus sessionStatus) {
+	                          SessionStatus sessionStatus) {
 
-		if (result.hasErrors()) {
-			return "finishOrder";
-		}
-		
-		order.setStartDate(new Date());
-		orderService.save(order);
-		sessionStatus.setComplete();
-		return "redirect:/users/orders";
+	    if (result.hasErrors()) {
+	        return "finishOrder";
+	    }
+
+	    order.setStartDate(new Date());
+	    orderService.save(order);
+	    sessionStatus.setComplete();
+	    
+	    return "redirect:/users/orders";
 	}
 }

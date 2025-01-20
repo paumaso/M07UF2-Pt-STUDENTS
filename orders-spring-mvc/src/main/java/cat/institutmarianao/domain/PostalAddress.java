@@ -104,5 +104,15 @@ public class PostalAddress implements Serializable {
 		}
 		return false;
 	}
+	
+	@Override
+    public String toString() {
+        return "PostalAddress{" +
+        		"name='" + recipientName + '\'' + 
+                "street='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", postalCode='" + zipCode + '\'' +
+                '}';
+    }
 
 }
