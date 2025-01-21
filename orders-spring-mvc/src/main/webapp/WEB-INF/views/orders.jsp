@@ -49,13 +49,24 @@
 						<th><spring:message code="orders.state" /></th>
 						<th><spring:message code="orders.deliveryDate" /></th>
 						<th><spring:message code="orders.details" /></th>
+						<sec:authorize access="hasRole('ADMIN')">
+							<th class="text-end"><a id="editButton"
+								class="btn btn-light me-2" onclick="toggleEditForms()"> <i
+									class="bi bi-pencil-fill"></i> <spring:message code="orders.edit" />
+							</a></th>
+						</sec:authorize>
 					</tr>
 				</thead>
 				<tbody>
 					<c:choose>
 						<c:when test="${empty Orders}">
 							<tr>
-								<td colspan="6" class="text-center">You have no orders</td>
+								<sec:authorize access="hasRole('USER')">
+								<td colspan="6" class="text-center"><spring:message code="orders.user.no.orders" /></td>
+								</sec:authorize>
+								<sec:authorize access="hasRole('ADMIN')">
+								<td colspan="7" class="text-center"><spring:message code="orders.admin.no.orders" /></td>
+								</sec:authorize>
 							</tr>
 						</c:when>
 						<c:otherwise>
@@ -119,7 +130,7 @@
 											</div>
 
 										</sec:authorize></td>
-									<td>
+									<td colspan="2">
 										<div class="table-responsive">
 											<table class="table table-striped table-bordered">
 												<thead>
@@ -164,12 +175,6 @@
 											</table>
 										</div>
 									</td>
-									<sec:authorize access="hasRole('ADMIN')">
-										<td class="text-end"><a id="editButton"
-											class="btn btn-primary me-2" onclick="toggleEditForms()">
-												<i class="bi bi-pencil-fill"></i>
-										</a></td>
-									</sec:authorize>
 								</tr>
 							</c:forEach>
 						</c:otherwise>

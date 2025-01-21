@@ -97,14 +97,4 @@ public class Item implements Serializable {
 		return false;
 	}
 	
-	@Override
-    public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                '}';
-    }
-	
-	
-
 }

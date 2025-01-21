@@ -15,6 +15,7 @@ public class PostalAddress implements Serializable {
 	private static final int MAX_CITY = 150;
 	private static final int MAX_STATE = 150;
 	private static final int MAX_COUNTRY = 150;
+	private static final int MAX_RECIPIENT_NAME = 150;
 
 	private String recipientName;
 
@@ -105,14 +106,4 @@ public class PostalAddress implements Serializable {
 		return false;
 	}
 	
-	@Override
-    public String toString() {
-        return "PostalAddress{" +
-        		"name='" + recipientName + '\'' + 
-                "street='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", postalCode='" + zipCode + '\'' +
-                '}';
-    }
-
 }

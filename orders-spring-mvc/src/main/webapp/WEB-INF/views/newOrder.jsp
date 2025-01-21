@@ -71,7 +71,8 @@
 							var="finishOrderUrl" />
 						<a href="${finishOrderUrl}"
 							class="btn btn-outline-secondary col-12" role="button"> <i
-							class="bi bi-bag-check-fill"></i> Finish order
+							class="bi bi-bag-check-fill"></i> <spring:message
+								code="newOrder.finish.order" />
 						</a>
 					</div>
 				</div>

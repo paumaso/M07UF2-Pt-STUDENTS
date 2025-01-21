@@ -148,7 +148,6 @@
 							</section>
 					</div>
 
-					<!-- Order Items Section -->
 					<div class="col-md-6">
 						<section class="mb-4">
 							<h3 class="h5">
@@ -185,7 +184,7 @@
 										</c:forEach>
 										<tr>
 											<td colspan="3"></td>
-											<td><strong>Total</strong></td>
+											<td><strong><spring:message code="orders.total"/></strong></td>
 											<td><strong><fmt:formatNumber value="${total}"
 														type="number" minFractionDigits="2" maxFractionDigits="2" />
 													<spring:message code="currency.symbol" /></strong></td>
