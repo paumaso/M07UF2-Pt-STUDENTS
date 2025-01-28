@@ -10,7 +10,31 @@
 <html>
 <head>
 <jsp:include page="sections/head.jsp" />
+<script>
+	function toggleEditForms() {
+		var stateDiv = document.getElementById("state");
+		var stateForm = document.getElementById("stateForm");
 
+		var deliveryDateDiv = document.getElementById("deliveryDate");
+		var deliveryDateForm = document.getElementById("deliveryDateForm");
+
+		if (stateDiv.style.display === "none") {
+			stateDiv.style.display = "block";
+			stateForm.style.display = "none";
+		} else {
+			stateDiv.style.display = "none";
+			stateForm.style.display = "block";
+		}
+
+		if (deliveryDateDiv.style.display === "none") {
+			deliveryDateDiv.style.display = "block";
+			deliveryDateForm.style.display = "none";
+		} else {
+			deliveryDateDiv.style.display = "none";
+			deliveryDateForm.style.display = "block";
+		}
+	}
+</script>
 </head>
 <body class="m-4">
 	<div class="container">
@@ -25,6 +49,12 @@
 						<th><spring:message code="orders.state" /></th>
 						<th><spring:message code="orders.deliveryDate" /></th>
 						<th><spring:message code="orders.details" /></th>
+						<sec:authorize access="hasRole('ADMIN')">
+							<th class="text-end"><a id="editButton"
+								class="btn btn-light me-2" onclick="toggleEditForms()"> <i
+									class="bi bi-pencil-fill"></i> <spring:message code="orders.edit" />
+							</a></th>
+						</sec:authorize>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,7 +93,8 @@
                                             ${state}
                                         </sec:authorize> <sec:authorize
 											access="hasRole('ADMIN')">
-											<div id="stateForm">
+											<div id="state">${state}</div>
+											<div id="stateForm" style="display: none">
 												<form action="/orders/admin/orders/setState" method="post">
 													<input type="hidden" name="reference"
 														value="${order.reference}" /> <select class="form-select"
@@ -83,7 +114,11 @@
 											<fmt:formatDate value="${order.deliveryDate}"
 												pattern="MMM dd, yyyy" />
 										</sec:authorize> <sec:authorize access="hasRole('ADMIN')">
-											<div id="deliveryDateForm">
+											<div id="deliveryDate">
+												<fmt:formatDate value="${order.deliveryDate}"
+													pattern="MMM dd, yyyy" />
+											</div>
+											<div id="deliveryDateForm" style="display: none">
 												<form action="/orders/admin/orders/setDeliveryDate"
 													method="post">
 													<input type="hidden" name="reference"

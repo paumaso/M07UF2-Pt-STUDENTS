@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.get(username);
 		if (user == null) {
-			throw new UsernameNotFoundException("User can no be null, Please, enter your credentials");
+			return null;
 		}
 		return new UserPrincipal(user);
 	}

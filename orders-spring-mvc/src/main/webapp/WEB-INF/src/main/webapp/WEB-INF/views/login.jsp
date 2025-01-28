@@ -30,9 +30,8 @@
 							<div class="card-body">
 							
 								<c:if test="${not empty error}">
-                                    <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center" role="alert">
+                                    <div class="alert alert-danger" role="alert">
                                         <spring:message code="login.credentials.failure" />
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 </c:if>
 								

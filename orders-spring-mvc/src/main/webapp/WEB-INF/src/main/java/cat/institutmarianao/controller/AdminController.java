@@ -37,7 +37,7 @@ public class AdminController {
 
 	@PostMapping("/setDeliveryDate")
 	public String setDeliveryDate(@RequestParam("reference") Long reference,
-			@RequestParam(value = "deliveryDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date deliveryDate) {
+			@RequestParam("deliveryDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date deliveryDate) {
 
 		Order order = orderService.get(reference);
 
